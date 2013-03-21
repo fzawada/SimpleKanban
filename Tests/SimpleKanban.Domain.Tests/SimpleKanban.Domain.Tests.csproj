@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props"
-          Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -19,6 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -26,10 +26,28 @@
     <DefineConstants>TRACE</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Simple.Testing.ClientFramework">
+      <HintPath>..\..\Libs\Simple.Testing\Simple.Testing.ClientFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AggregateRootExtensions.cs" />
+    <Compile Include="Boards\When_adding_new_lane.cs" />
+    <Compile Include="Boards\When_creating.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\SimpleKanban.Domain\SimpleKanban.Domain.csproj">
+      <Project>{3e347859-5583-44d5-83d2-c9e0b86c30c2}</Project>
+      <Name>SimpleKanban.Domain</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>c:\dev\Simple.Testing\src\Simple.Testing.Runner\bin\Debug\Simple.Testing.Runner.exe   c:\dev\SimpleKanban\Tests\Bin\SimpleKanban.Domain.Tests.dll</PostBuildEvent>
+  </PropertyGroup>
   <!-- <Target Name="Build">
     <MakeDir Directories="$(OutputPath)" Condition="!Exists('$(OutputPath)')" />
     <Csc Sources="@(Compile)" OutputAssembly="$(OutputPath)$(AssemblyName).dll" />
